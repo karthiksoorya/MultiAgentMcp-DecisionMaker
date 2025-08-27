@@ -150,6 +150,171 @@ The system uses the official **@executeautomation/database-server** npm package 
 - **✅ Compatible**: Works with any MCP-compatible AI system
 - **✅ Secure**: Built-in security features and validation
 
+## 🎯 Flow Diagrams
+
+### 🏗️ System Architecture Flow
+```mermaid
+graph TB
+    subgraph "User Interfaces"
+        UI1[🌐 Streamlit Web Interface<br/>Port 8501]
+        UI2[🤖 Claude AI<br/>MCP Client]
+    end
+    
+    subgraph "Application Layer"
+        STREAM[📊 Streamlit App<br/>streamlit_app.py]
+        ORCH[🧠 Enhanced Orchestrator<br/>orchestrator.py]
+        AGENTS[🤖 Specialized Agents<br/>User/Transaction/Analytics]
+    end
+    
+    subgraph "MCP Integration"
+        MCP[🔌 NPM MCP Server<br/>@executeautomation/database-server<br/>Port: MCP Protocol]
+        TOOLS[🛠️ Database Tools<br/>read_query, write_query<br/>list_tables, export_query]
+    end
+    
+    subgraph "Data Layer"
+        DEMO[(📁 Demo SQLite DB<br/>./data/demo.db)]
+        PROD[(🗄️ PostgreSQL DBs<br/>Users & Transactions)]
+        POOL[⚡ Connection Pool<br/>AsyncPG + SQLAlchemy]
+    end
+    
+    subgraph "Monitoring & Config"
+        PROM[📈 Prometheus Metrics]
+        CONFIG[⚙️ Config Management<br/>.env + config.py]
+        LOG[📝 Logging System]
+    end
+    
+    %% User Interface Connections
+    UI1 --> STREAM
+    UI2 --> MCP
+    
+    %% Application Flow
+    STREAM --> ORCH
+    STREAM --> CONFIG
+    ORCH --> AGENTS
+    AGENTS --> POOL
+    
+    %% MCP Flow
+    MCP --> TOOLS
+    TOOLS --> DEMO
+    TOOLS --> PROD
+    
+    %% Data Connections
+    POOL --> PROD
+    ORCH --> PROM
+    AGENTS --> LOG
+    
+    %% Styling
+    classDef userInterface fill:#e1f5fe
+    classDef application fill:#f3e5f5
+    classDef mcp fill:#e8f5e8
+    classDef data fill:#fff3e0
+    classDef monitoring fill:#fce4ec
+    
+    class UI1,UI2 userInterface
+    class STREAM,ORCH,AGENTS application
+    class MCP,TOOLS mcp
+    class DEMO,PROD,POOL data
+    class PROM,CONFIG,LOG monitoring
+```
+
+### 🔄 Data Processing Flow
+```mermaid
+sequenceDiagram
+    participant User as 👤 User
+    participant Web as 🌐 Streamlit Web
+    participant Claude as 🤖 Claude AI
+    participant MCP as 🔌 MCP Server
+    participant Orch as 🧠 Orchestrator
+    participant Agent as 🤖 Specialized Agent
+    participant DB as 🗄️ Database
+    participant Monitor as 📊 Monitoring
+    
+    Note over User,Monitor: Multi-Path Data Processing
+    
+    %% Web Interface Path
+    User->>Web: 1. Submit Query
+    Web->>Orch: 2. Process Query
+    Orch->>Agent: 3. Delegate to Specialist
+    Agent->>DB: 4. Execute SQL
+    DB-->>Agent: 5. Return Data
+    Agent->>Agent: 6. Analyze & Enrich
+    Agent-->>Orch: 7. Processed Results
+    Orch->>Monitor: 8. Log Metrics
+    Orch-->>Web: 9. Combined Insights
+    Web-->>User: 10. Display Results
+    
+    Note over User,Monitor: ---
+    
+    %% MCP/Claude Path  
+    Claude->>MCP: 1. MCP Tool Call
+    Note over MCP: read_query, list_tables, etc.
+    MCP->>DB: 2. Direct SQL Execution
+    DB-->>MCP: 3. Raw Results
+    MCP->>MCP: 4. Format for Claude
+    MCP-->>Claude: 5. Structured Response
+    Claude->>Claude: 6. AI Analysis
+    
+    Note over User,Monitor: ---
+    
+    %% Cross-System Integration
+    Claude->>MCP: append_insight("Analysis Result")
+    Web->>Orch: Get stored insights
+    Orch->>DB: Query insights table
+    DB-->>Web: Display to user
+```
+
+### 🤖 Multi-Agent Workflow
+```mermaid
+flowchart TD
+    START([🚀 User Query Received]) --> PARSE{📝 Parse Query Intent}
+    
+    PARSE -->|User Analysis| UA[👥 User Analysis Agent]
+    PARSE -->|Transaction Analysis| TA[💰 Transaction Agent]
+    PARSE -->|General Analytics| AA[📊 Analytics Agent]
+    PARSE -->|Cross-Database| MULTI[🔄 Multi-Agent Coordination]
+    
+    subgraph "User Analysis Agent Flow"
+        UA --> UA1[🔍 Identify User Patterns]
+        UA1 --> UA2[📊 Demographic Analysis]
+        UA2 --> UA3[⏱️ Activity Tracking]
+        UA3 --> UA4[📈 User Segmentation]
+    end
+    
+    subgraph "Transaction Analysis Agent Flow"
+        TA --> TA1[💳 Transaction Patterns]
+        TA1 --> TA2[🏷️ Category Analysis]
+        TA2 --> TA3[💰 Spending Behavior]
+        TA3 --> TA4[🎯 Fraud Detection]
+    end
+    
+    subgraph "Analytics Agent Flow"
+        AA --> AA1[📈 Trend Analysis]
+        AA1 --> AA2[🔗 Correlation Finding]
+        AA2 --> AA3[🎯 Insight Generation]
+        AA3 --> AA4[📊 Visualization Prep]
+    end
+    
+    %% Results Consolidation
+    UA4 --> CONSOLIDATE[🔄 Data Consolidation]
+    TA4 --> CONSOLIDATE
+    AA4 --> CONSOLIDATE
+    
+    CONSOLIDATE --> CORRELATE[🔗 Cross-Reference Data]
+    CORRELATE --> INSIGHTS[💡 Generate AI Insights]
+    INSIGHTS --> RECOMMEND[🎯 Create Recommendations]
+    
+    %% Output Generation
+    RECOMMEND --> FORMAT{📄 Format Output}
+    FORMAT -->|Web UI| WEB[🌐 Streamlit Display]
+    FORMAT -->|MCP Response| MCP_OUT[🔌 Claude Integration]
+    FORMAT -->|API Response| API[📡 JSON Response]
+    
+    %% Final Outputs
+    WEB --> END1([✅ Web Dashboard])
+    MCP_OUT --> END2([✅ Claude Response])
+    API --> END3([✅ API Result])
+```
+
 ## Example Queries
 
 - "Show me all active users"
