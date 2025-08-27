@@ -1,22 +1,22 @@
 #!/bin/bash
-echo "Starting Multi-Agent System - Web Interface + MCP Server"
-echo "========================================================"
+echo "Starting Enhanced Multi-Agent System with NPM MCP Server"
+echo "========================================================="
 echo
 
-# Start MCP database server in background using npm package
+# Start MCP Database Server using npm in background
 echo "Starting MCP Database Server (npm package)..."
-npx @executeautomation/database-server --postgresql --host localhost --database testdb --user testuser --password testpass --port 5432 &
+npm run mcp-postgres &
 MCP_PID=$!
 
-# Wait a moment for MCP server to start
-sleep 3
+# Wait for MCP server to start
+sleep 5
 
 # Start Streamlit web interface
-echo "Starting Streamlit Web Interface on port 8501..."
+echo "Starting Streamlit Web Interface..."
 echo
 echo "Services will be available at:"
 echo "- Web Interface: http://localhost:8501"
-echo "- MCP Server: http://localhost:8000"
+echo "- MCP Database Server: Available for Claude integration"
 echo
 echo "Press Ctrl+C to stop both services"
 echo

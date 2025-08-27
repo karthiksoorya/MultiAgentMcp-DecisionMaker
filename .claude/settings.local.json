@@ -12,7 +12,12 @@
       "Bash(docker compose:*)",
       "Bash(chmod:*)",
       "Bash(run_both.bat)",
-      "Bash(del complete_project_bundle.py)"
+      "Bash(del complete_project_bundle.py)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm:*)",
+      "Bash(git clone:*)",
+      "Bash(npx @executeautomation/database-server:*)",
+      "Bash(start_npm_mcp.bat)"
     ],
     "deny": [],
     "ask": []

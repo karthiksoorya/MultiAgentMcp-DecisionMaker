@@ -3,9 +3,9 @@ echo Starting Multi-Agent System - Web Interface + MCP Server
 echo ========================================================
 echo.
 
-REM Start MCP server in background
-echo Starting MCP Server on port 8000...
-start "MCP Server" cmd /k "python src/mcp/server.py --port 8000"
+REM Start MCP database server in background using npm package
+echo Starting MCP Database Server (npm package)...
+start "MCP Server" cmd /k "npx @executeautomation/database-server --postgresql --host localhost --database testdb --user testuser --password testpass --port 5432"
 
 REM Wait a moment for MCP server to start
 timeout /t 3 /nobreak > nul

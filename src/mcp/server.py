@@ -58,6 +58,7 @@ sys.path.insert(0, str(project_root))
 from src.agents.orchestrator import EnhancedOrchestrator
 from src.utils.config import Config
 from src.utils.monitoring import get_metrics, track_mcp_call
+from .database_tools import DatabaseTools
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +69,7 @@ class MCPMultiAgentServer:
         self.config = config or Config()
         self.server = Server("multi-agent-postgres-analysis", "1.0.0")
         self.orchestrator = None
+        self.database_tools = DatabaseTools(self.config)
         self.session_id = str(uuid.uuid4())
         
         # Setup tools
@@ -76,8 +78,13 @@ class MCPMultiAgentServer:
     async def initialize(self):
         """Initialize the MCP server and orchestrator"""
         try:
+            # Initialize orchestrator
             self.orchestrator = EnhancedOrchestrator(self.config)
             await self.orchestrator.initialize()
+            
+            # Initialize database tools
+            await self.database_tools.initialize()
+            
             logger.info(f"MCP Server initialized with session: {self.session_id}")
             return True
         except Exception as e:
@@ -169,6 +176,97 @@ class MCPMultiAgentServer:
                         },
                         "required": ["query"]
                     }
+                ),
+                # Standardized Database Tools (from executeautomation/mcp-database-server)
+                Tool(
+                    name="read_query",
+                    description="Execute SELECT queries to read data from the database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "SQL SELECT query to execute"},
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        },
+                        "required": ["query"]
+                    }
+                ),
+                Tool(
+                    name="write_query",
+                    description="Execute INSERT, UPDATE, or DELETE queries",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "SQL query to execute"},
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        },
+                        "required": ["query"]
+                    }
+                ),
+                Tool(
+                    name="create_table",
+                    description="Create new tables in the database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "CREATE TABLE SQL statement"},
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        },
+                        "required": ["query"]
+                    }
+                ),
+                Tool(
+                    name="list_tables",
+                    description="Get a list of all tables in the database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        }
+                    }
+                ),
+                Tool(
+                    name="describe_table",
+                    description="View schema information for a specific table",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "table_name": {"type": "string", "description": "Name of the table to describe"},
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        },
+                        "required": ["table_name"]
+                    }
+                ),
+                Tool(
+                    name="export_query",
+                    description="Export query results to various formats (CSV, JSON)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "SQL query to execute"},
+                            "format": {"type": "string", "enum": ["csv", "json"], "description": "Export format"},
+                            "database": {"type": "string", "description": "Database name (optional)"}
+                        },
+                        "required": ["query", "format"]
+                    }
+                ),
+                Tool(
+                    name="append_insight",
+                    description="Add a business insight to the memo",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "insight": {"type": "string", "description": "Business insight to add"}
+                        },
+                        "required": ["insight"]
+                    }
+                ),
+                Tool(
+                    name="list_insights",
+                    description="List all business insights in the memo",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {}
+                    }
                 )
             ]
             return ListToolsResult(tools=tools)
@@ -190,20 +288,68 @@ class MCPMultiAgentServer:
                     result = await self._handle_get_metrics(arguments)
                 elif name == "explain_query_plan":
                     result = await self._handle_explain_plan(arguments)
+                # Standardized Database Tools
+                elif name == "read_query":
+                    result = await self.database_tools.read_query(
+                        arguments["query"], 
+                        arguments.get("database")
+                    )
+                elif name == "write_query":
+                    result = await self.database_tools.write_query(
+                        arguments["query"], 
+                        arguments.get("database")
+                    )
+                elif name == "create_table":
+                    result = await self.database_tools.create_table(
+                        arguments["query"], 
+                        arguments.get("database")
+                    )
+                elif name == "list_tables":
+                    result = await self.database_tools.list_tables(
+                        arguments.get("database")
+                    )
+                elif name == "describe_table":
+                    result = await self.database_tools.describe_table(
+                        arguments["table_name"], 
+                        arguments.get("database")
+                    )
+                elif name == "export_query":
+                    result = await self.database_tools.export_query(
+                        arguments["query"],
+                        arguments["format"],
+                        arguments.get("database")
+                    )
+                elif name == "append_insight":
+                    result = await self.database_tools.append_insight(
+                        arguments["insight"]
+                    )
+                elif name == "list_insights":
+                    result = await self.database_tools.list_insights()
                 else:
                     result = {
                         "success": False,
                         "error": f"Unknown tool: {name}",
-                        "available_tools": ["analyze_databases", "get_database_schema", "test_connections", "get_system_metrics", "explain_query_plan"]
+                        "available_tools": [
+                            "analyze_databases", "get_database_schema", "test_connections", 
+                            "get_system_metrics", "explain_query_plan", "read_query", 
+                            "write_query", "create_table", "list_tables", "describe_table",
+                            "export_query", "append_insight", "list_insights"
+                        ]
                     }
                 
                 # Track the call for monitoring
                 execution_time = (datetime.now() - start_time).total_seconds()
-                track_mcp_call(name, result.get("success", False), execution_time)
                 
-                # Format result for Claude
-                content = [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
-                return CallToolResult(content=content)
+                # Handle different result formats
+                if isinstance(result, dict) and "content" in result:
+                    # Standardized database tools format
+                    track_mcp_call(name, not result.get("isError", False), execution_time)
+                    return CallToolResult(content=[TextContent(type="text", text=content["text"]) for content in result["content"]])
+                else:
+                    # Original tools format
+                    track_mcp_call(name, result.get("success", False), execution_time)
+                    content = [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+                    return CallToolResult(content=content)
                 
             except Exception as e:
                 error_result = {
@@ -357,6 +503,10 @@ class MCPMultiAgentServer:
         """Cleanup server resources"""
         if self.orchestrator:
             await self.orchestrator.cleanup()
+        
+        if self.database_tools:
+            await self.database_tools.cleanup()
+            
         logger.info(f"MCP Server cleanup completed for session: {self.session_id}")
 
 # Factory function for easy server creation

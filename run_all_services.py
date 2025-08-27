@@ -15,9 +15,13 @@ class ServiceManager:
         self.project_root = Path(__file__).parent
         
     def start_mcp_server(self, port=8000):
-        """Start MCP server in background"""
-        print(f"[MCP] Starting MCP Server on port {port}...")
-        cmd = [sys.executable, "src/mcp/server.py", "--port", str(port)]
+        """Start MCP database server using npm package"""
+        print(f"[MCP] Starting MCP Database Server (npm package)...")
+        cmd = [
+            "npx", "@executeautomation/database-server",
+            "--postgresql", "--host", "localhost", "--database", "testdb",
+            "--user", "testuser", "--password", "testpass", "--port", "5432"
+        ]
         
         process = subprocess.Popen(
             cmd,

@@ -1,0 +1,31 @@
+{
+  "name": "enhanced-multiagent-postgres-analysis",
+  "version": "1.0.0",
+  "description": "Enhanced Multi-Agent PostgreSQL Analysis System with MCP Integration",
+  "main": "index.js",
+  "scripts": {
+    "mcp-server": "ea-database-server",
+    "mcp-sqlite": "ea-database-server ./data/demo.db",
+    "mcp-postgres": "ea-database-server --postgresql --host localhost --database testdb --user testuser --password testpass --port 5432",
+    "mcp-postgres-env": "dotenv -e .env -- ea-database-server --postgresql --host $DB1_HOST --database $DB1_NAME --user $DB1_USER --password $DB1_PASSWORD --port $DB1_PORT",
+    "start-web": "streamlit run streamlit_app.py --server.port=8501",
+    "start-both-sqlite": "concurrently \"npm run mcp-sqlite\" \"npm run start-web\"",
+    "start-both": "concurrently \"npm run mcp-postgres-env\" \"npm run start-web\"",
+    "create-demo-db": "node -e \"const fs = require('fs'); if (!fs.existsSync('./data')) fs.mkdirSync('./data'); console.log('Demo database directory created');\""
+  },
+  "dependencies": {
+    "@executeautomation/database-server": "^1.1.0",
+    "concurrently": "^8.2.2",
+    "dotenv-cli": "^7.4.4"
+  },
+  "keywords": [
+    "mcp",
+    "database",
+    "postgresql",
+    "multi-agent",
+    "ai",
+    "claude"
+  ],
+  "author": "",
+  "license": "MIT"
+}
