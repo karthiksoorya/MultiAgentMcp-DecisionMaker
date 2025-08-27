@@ -11,7 +11,8 @@
       "Bash(docker-compose:*)",
       "Bash(docker compose:*)",
       "Bash(chmod:*)",
-      "Bash(run_both.bat)"
+      "Bash(run_both.bat)",
+      "Bash(del complete_project_bundle.py)"
     ],
     "deny": [],
     "ask": []
