@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(set PYTHONIOENCODING=utf-8)",
+      "Bash(venvScripts:*)",
+      "Bash(pip install:*)",
+      "Bash(venv\\Scripts\\activate:*)",
+      "Bash(call venv\\Scripts\\activate.bat)",
+      "Bash(streamlit run:*)",
+      "Bash(docker-compose:*)",
+      "Bash(docker compose:*)",
+      "Bash(chmod:*)",
+      "Bash(run_both.bat)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

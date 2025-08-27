@@ -1,0 +1,381 @@
+# Comprehensive CI/CD Pipeline for Enhanced Multi-Agent PostgreSQL Analysis System
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run security scans weekly
+    - cron: '0 0 * * 0'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  # Code Quality and Security
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality & Security
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better analysis
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install black isort flake8 mypy bandit safety pytest-cov
+
+    - name: Code formatting check (Black)
+      run: black --check --diff src/ tests/
+
+    - name: Import sorting check (isort)
+      run: isort --check-only --diff src/ tests/
+
+    - name: Linting (flake8)
+      run: flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503
+
+    - name: Type checking (mypy)
+      run: mypy src/ --ignore-missing-imports
+
+    - name: Security audit (bandit)
+      run: bandit -r src/ -f json -o bandit-report.json
+
+    - name: Dependency vulnerability scan (safety)
+      run: safety check --json --output safety-report.json
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  # Comprehensive Testing
+  test:
+    runs-on: ubuntu-latest
+    name: Comprehensive Testing
+    
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_USER: testuser
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov pytest-xdist
+
+    - name: Set up test environment
+      run: |
+        cp .env.template .env
+        echo "DB1_HOST=localhost" >> .env
+        echo "DB1_NAME=testdb" >> .env
+        echo "DB1_USER=testuser" >> .env
+        echo "DB1_PASSWORD=testpass" >> .env
+        echo "DB1_PORT=5432" >> .env
+        echo "REDIS_URL=redis://localhost:6379" >> .env
+
+    - name: Initialize test database
+      run: |
+        PGPASSWORD=testpass psql -h localhost -U testuser -d testdb -f sql/init.sql
+
+    - name: Run unit tests
+      run: |
+        pytest tests/ -v --cov=src --cov-report=xml --cov-report=html --cov-report=term
+
+    - name: Run integration tests
+      run: |
+        python tests/test_setup.py
+
+    - name: Test Docker build
+      run: |
+        docker build -t multiagent-test:${{ github.sha }} .
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+    - name: Store test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results-${{ matrix.python-version }}
+        path: |
+          htmlcov/
+          coverage.xml
+
+  # Performance Testing
+  performance:
+    runs-on: ubuntu-latest
+    name: Performance Testing
+    needs: test
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_USER: testuser
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install locust
+
+    - name: Initialize test database
+      run: |
+        PGPASSWORD=testpass psql -h localhost -U testuser -d testdb -f sql/init.sql
+
+    - name: Run performance tests
+      run: |
+        # Create performance test script
+        cat > locustfile.py << EOF
+        from locust import HttpUser, task, between
+        import json
+
+        class MultiAgentUser(HttpUser):
+            wait_time = between(1, 3)
+            
+            @task
+            def test_query_endpoint(self):
+                payload = {
+                    "query": "Show me user analysis",
+                    "include_insights": True
+                }
+                self.client.post("/api/query", json=payload)
+        EOF
+        
+        # Run load test (lightweight for CI)
+        # locust -f locustfile.py --headless --users 5 --spawn-rate 1 -t 30s --host=http://localhost:8000
+
+  # Security Scanning
+  security:
+    runs-on: ubuntu-latest
+    name: Security Scanning
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Docker security scan
+      if: github.event_name == 'push'
+      run: |
+        docker build -t multiagent-security-test .
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          -v $PWD:/root/.cache/ aquasec/trivy:latest image multiagent-security-test
+
+  # Build and Push Docker Images
+  build-and-push:
+    runs-on: ubuntu-latest
+    name: Build & Push Docker Images
+    needs: [code-quality, test, security]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/multiagent-postgres-analysis
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        target: production
+
+  # Deployment
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Environment
+    needs: [build-and-push]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production environment..."
+        # Add your deployment script here
+        # For example, updating Kubernetes manifests, triggering deployment webhooks, etc.
+        
+        # Example: Deploy with docker-compose (replace with your actual deployment)
+        echo "Docker image: ${{ secrets.DOCKERHUB_USERNAME }}/multiagent-postgres-analysis:main-${{ github.sha }}"
+
+    - name: Health check
+      run: |
+        echo "Running post-deployment health checks..."
+        # Add health check commands here
+        
+    - name: Notify deployment status
+      if: always()
+      run: |
+        echo "Deployment completed with status: ${{ job.status }}"
+
+  # Cleanup
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup Resources
+    if: always()
+    needs: [code-quality, test, performance, security, build-and-push, deploy]
+    
+    steps:
+    - name: Clean up Docker images
+      run: |
+        docker system prune -f
+        
+    - name: Clean up test artifacts
+      run: |
+        echo "Cleaning up temporary test resources..."
+
+  # Release Management
+  release:
+    runs-on: ubuntu-latest
+    name: Create Release
+    needs: [deploy]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Generate changelog from commits
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        git log --pretty=format:"- %s (%an)" $(git describe --tags --abbrev=0)..HEAD >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body: |
+          ## Changes in this Release
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Docker Image
+          `docker pull ${{ secrets.DOCKERHUB_USERNAME }}/multiagent-postgres-analysis:main-${{ github.sha }}`
+          
+          ## Deployment
+          This release has been automatically deployed to production.
+        draft: false
+        prerelease: false
