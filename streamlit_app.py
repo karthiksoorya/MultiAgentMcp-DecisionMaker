@@ -13,10 +13,17 @@ import time
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Import our multi-agent system
-from main import MultiAgentSystem
-from utils.config import Config
-from utils.mcp_client import DatabaseAgent
+# Import our distributed multi-agent system
+try:
+    from main import MultiAgentSystem
+    from utils.config import Config
+    from agents.distributed_orchestrator import DistributedOrchestrator
+    DISTRIBUTED_MODE = True
+except ImportError:
+    from main import MultiAgentSystem
+    from utils.config import Config
+    from utils.mcp_client import DatabaseAgent
+    DISTRIBUTED_MODE = False
 
 # Page config
 st.set_page_config(
@@ -113,8 +120,8 @@ def main():
     with st.sidebar:
         selected = option_menu(
             "Navigation",
-            ["🏠 Dashboard", "🔍 Query Interface", "⚙️ Configuration", "📊 Analytics", "📋 History"],
-            icons=['house', 'search', 'gear', 'graph-up', 'clock-history'],
+            ["🏠 Dashboard", "🔍 Query Interface", "🤖 Distributed System", "⚙️ Configuration", "📊 Analytics", "📋 History"],
+            icons=['house', 'search', 'distribute-vertical', 'gear', 'graph-up', 'clock-history'],
             menu_icon="cast",
             default_index=0,
         )
@@ -123,6 +130,8 @@ def main():
         show_dashboard()
     elif selected == "🔍 Query Interface":
         show_query_interface()
+    elif selected == "🤖 Distributed System":
+        show_distributed_system()
     elif selected == "⚙️ Configuration":
         show_configuration()
     elif selected == "📊 Analytics":
@@ -526,6 +535,201 @@ def show_history():
             # Re-execute button
             if st.button(f"🔄 Re-execute", key=f"rerun_{i}"):
                 execute_query(query_info['query'])
+
+def show_distributed_system():
+    """Show distributed multi-agent system interface"""
+    st.header("🤖 Distributed Multi-Agent System")
+    
+    if not DISTRIBUTED_MODE:
+        st.error("❌ Distributed mode is not available. Please ensure the distributed agents are properly installed.")
+        st.info("To enable distributed mode, make sure the following files exist:")
+        st.code("""
+- src/agents/distributed_agents.py
+- src/agents/distributed_orchestrator.py
+- data/users_db.sqlite
+- data/products_db.sqlite
+- data/sales_db.sqlite
+        """)
+        return
+    
+    # System Overview
+    st.subheader("🏗️ System Architecture")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("👥 Users Database", "Ready", delta="MCP Server")
+        st.info("Handles user demographics, addresses, and preferences")
+    
+    with col2:
+        st.metric("🛍️ Products Database", "Ready", delta="MCP Server")  
+        st.info("Manages product catalog, categories, and inventory")
+    
+    with col3:
+        st.metric("💰 Sales Database", "Ready", delta="MCP Server")
+        st.info("Processes orders, transactions, and analytics")
+    
+    # Initialize distributed system
+    if 'distributed_orchestrator' not in st.session_state:
+        st.session_state.distributed_orchestrator = None
+        st.session_state.distributed_initialized = False
+    
+    # Initialization section
+    st.subheader("🚀 System Initialization")
+    
+    if not st.session_state.distributed_initialized:
+        if st.button("🎯 Initialize Distributed System", type="primary"):
+            with st.spinner("Initializing distributed orchestrator..."):
+                try:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    
+                    from src.agents.distributed_orchestrator import DistributedOrchestrator
+                    orchestrator = DistributedOrchestrator()
+                    
+                    # Initialize the orchestrator
+                    success = loop.run_until_complete(orchestrator.initialize())
+                    loop.close()
+                    
+                    if success:
+                        st.session_state.distributed_orchestrator = orchestrator
+                        st.session_state.distributed_initialized = True
+                        st.success("✅ Distributed system initialized successfully!")
+                        st.rerun()
+                    else:
+                        st.error("❌ Failed to initialize distributed system")
+                except Exception as e:
+                    st.error(f"❌ Initialization error: {str(e)}")
+    else:
+        st.success("✅ Distributed system is ready")
+        
+        # Query Interface for Distributed System
+        st.subheader("💬 Distributed Query Interface")
+        
+        # Example queries specific to distributed system
+        example_queries = [
+            "How much did users spend and in which regions do they prefer which products?",
+            "Show me high-spending customers and their favorite product categories",
+            "Analyze user behavior patterns across all databases",
+            "Which products are most popular in each region?",
+            "Find users who spent more than $500 and show their regional distribution",
+            "Show sales trends by product category and user demographics"
+        ]
+        
+        st.write("**Example Queries:**")
+        for i, example in enumerate(example_queries):
+            if st.button(f"📋 {example}", key=f"example_{i}"):
+                st.session_state.distributed_query = example
+                st.rerun()
+        
+        # Query input
+        distributed_query = st.text_area(
+            "Enter your distributed query:",
+            value=st.session_state.get('distributed_query', ''),
+            placeholder="Ask questions that span across users, products, and sales data...",
+            height=100
+        )
+        
+        col1, col2 = st.columns([1, 4])
+        
+        with col1:
+            if st.button("🔍 Execute Query", type="primary", disabled=not distributed_query.strip()):
+                execute_distributed_query(distributed_query.strip())
+        
+        with col2:
+            if st.button("🧹 Clear Query"):
+                st.session_state.distributed_query = ""
+                st.rerun()
+        
+        # Query Results Section
+        if 'distributed_results' in st.session_state and st.session_state.distributed_results:
+            st.subheader("📊 Query Results")
+            
+            result = st.session_state.distributed_results[-1]  # Show latest result
+            
+            if result['success']:
+                # Show consolidated insights
+                st.success("✅ Query executed successfully across all databases")
+                
+                # Display insights
+                if 'insights' in result:
+                    st.markdown("### 🎯 Key Insights")
+                    st.markdown(result['insights'])
+                
+                # Show agent contributions
+                if 'agent_results' in result:
+                    st.markdown("### 🤖 Agent Contributions")
+                    
+                    for agent_name, agent_result in result['agent_results'].items():
+                        with st.expander(f"{agent_name} Results"):
+                            if agent_result.get('success'):
+                                st.write("**Query Processed:**", agent_result.get('query', 'N/A'))
+                                if 'data' in agent_result:
+                                    st.json(agent_result['data'])
+                            else:
+                                st.error(f"❌ {agent_name} failed: {agent_result.get('error', 'Unknown error')}")
+                
+                # Show correlation results if available
+                if 'correlations' in result:
+                    st.markdown("### 🔗 Cross-Database Correlations")
+                    st.json(result['correlations'])
+                    
+            else:
+                st.error(f"❌ Query failed: {result.get('error', 'Unknown error')}")
+        
+        # System Status
+        st.subheader("📈 System Status")
+        
+        # Show recent distributed queries
+        if 'distributed_results' in st.session_state and st.session_state.distributed_results:
+            st.write(f"**Recent Queries:** {len(st.session_state.distributed_results)}")
+            
+            # Show summary of recent queries
+            for i, result in enumerate(reversed(st.session_state.distributed_results[-3:])):
+                with st.expander(f"Query {len(st.session_state.distributed_results) - i}: {result['query'][:50]}..."):
+                    st.write(f"**Status:** {'✅ Success' if result['success'] else '❌ Failed'}")
+                    st.write(f"**Timestamp:** {result['timestamp']}")
+                    if result['success'] and 'agent_results' in result:
+                        st.write(f"**Agents Used:** {', '.join(result['agent_results'].keys())}")
+
+def execute_distributed_query(query: str):
+    """Execute a query using the distributed system"""
+    if not st.session_state.distributed_orchestrator:
+        st.error("❌ Distributed system not initialized")
+        return
+    
+    # Initialize results list if needed
+    if 'distributed_results' not in st.session_state:
+        st.session_state.distributed_results = []
+    
+    with st.spinner("🔄 Processing distributed query..."):
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
+            # Execute the distributed query
+            result = loop.run_until_complete(
+                st.session_state.distributed_orchestrator.process_query(query)
+            )
+            loop.close()
+            
+            # Add timestamp and query to result
+            result['query'] = query
+            result['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            # Store result
+            st.session_state.distributed_results.append(result)
+            
+            st.rerun()
+            
+        except Exception as e:
+            error_result = {
+                'success': False,
+                'error': str(e),
+                'query': query,
+                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+            st.session_state.distributed_results.append(error_result)
+            st.error(f"❌ Query execution failed: {str(e)}")
 
 if __name__ == "__main__":
     main()

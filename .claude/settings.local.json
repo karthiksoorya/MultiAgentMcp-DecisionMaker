@@ -17,7 +17,8 @@
       "Bash(npm:*)",
       "Bash(git clone:*)",
       "Bash(npx @executeautomation/database-server:*)",
-      "Bash(start_npm_mcp.bat)"
+      "Bash(start_npm_mcp.bat)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []

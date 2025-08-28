@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "mcp-server": "ea-database-server",
-    "mcp-sqlite": "ea-database-server ./data/demo.db",
-    "mcp-postgres": "ea-database-server --postgresql --host localhost --database testdb --user testuser --password testpass --port 5432",
+    "mcp-users": "ea-database-server ./data/users_db.sqlite",
+    "mcp-products": "ea-database-server ./data/products_db.sqlite", 
+    "mcp-sales": "ea-database-server ./data/sales_db.sqlite",
+    "mcp-demo": "ea-database-server ./data/demo.db",
     "mcp-postgres-env": "dotenv -e .env -- ea-database-server --postgresql --host $DB1_HOST --database $DB1_NAME --user $DB1_USER --password $DB1_PASSWORD --port $DB1_PORT",
     "start-web": "streamlit run streamlit_app.py --server.port=8501",
-    "start-both-sqlite": "concurrently \"npm run mcp-sqlite\" \"npm run start-web\"",
-    "start-both": "concurrently \"npm run mcp-postgres-env\" \"npm run start-web\"",
+    "start-distributed": "concurrently \"npm run mcp-users\" \"npm run mcp-products\" \"npm run mcp-sales\" \"npm run start-web\" --names \"Users-MCP,Products-MCP,Sales-MCP,Web\" --prefix-colors \"blue,green,yellow,magenta\"",
+    "start-demo": "concurrently \"npm run mcp-demo\" \"npm run start-web\" --names \"Demo-MCP,Web\" --prefix-colors \"cyan,magenta\"",
+    "setup-distributed-dbs": "node scripts/setup-distributed-databases.js",
     "create-demo-db": "node -e \"const fs = require('fs'); if (!fs.existsSync('./data')) fs.mkdirSync('./data'); console.log('Demo database directory created');\""
   },
   "dependencies": {
