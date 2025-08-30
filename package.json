@@ -1,7 +1,7 @@
 {
-  "name": "enhanced-multiagent-postgres-analysis",
+  "name": "csuite-decision-maker",
   "version": "1.0.0",
-  "description": "Enhanced Multi-Agent PostgreSQL Analysis System with MCP Integration",
+  "description": "C-Suite Decision Maker - AI-powered executive decision support system with MCP Integration",
   "main": "index.js",
   "scripts": {
     "mcp-server": "ea-database-server",

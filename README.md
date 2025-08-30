@@ -1,6 +1,6 @@
-# 🚀 Enhanced Multi-Agent PostgreSQL Analysis System
+# 🚀 C-Suite Decision Maker
 
-A production-ready, enterprise-grade multi-agent system that orchestrates intelligent queries across multiple PostgreSQL databases with **standardized MCP Protocol** integration using the official [executeautomation/mcp-database-server](https://github.com/executeautomation/mcp-database-server) npm package.
+A production-ready, enterprise-grade AI-powered decision support system that orchestrates intelligent business analysis across multiple databases with **standardized MCP Protocol** integration using the official [executeautomation/mcp-database-server](https://github.com/executeautomation/mcp-database-server) npm package.
 
 ## 🏗️ Advanced Architecture
 
@@ -25,9 +25,9 @@ A production-ready, enterprise-grade multi-agent system that orchestrates intell
 
 ```bash
 # Create virtual environment
-python -m venv multiagent_env
-multiagent_env\Scripts\activate  # Windows
-# source multiagent_env/bin/activate  # Linux/Mac
+python -m venv csuite_env
+csuite_env\Scripts\activate  # Windows
+# source csuite_env/bin/activate  # Linux/Mac
 
 # Install Python dependencies
 pip install -r requirements.txt

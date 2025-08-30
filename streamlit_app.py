@@ -182,11 +182,11 @@ def show_dashboard():
                     st.write("**Insights:**")
                     st.write(query_info['result']['insights'])
     else:
-        st.info("No queries executed yet. Go to Query Interface to start!")
+        st.info("No queries executed yet. Go to Business Intelligence to start!")
 
 def show_query_interface():
-    """Show query interface"""
-    st.header("🔍 Query Interface")
+    """Show business intelligence interface"""
+    st.header("🔍 Business Intelligence")
     
     # Initialize system if needed
     if not st.session_state.initialized:
@@ -411,8 +411,8 @@ def test_connections():
             st.error(f"❌ {db_name}: Connection failed")
 
 def show_analytics():
-    """Show analytics dashboard"""
-    st.header("📊 Analytics Dashboard")
+    """Show executive reports dashboard"""
+    st.header("📊 Executive Reports")
     
     if not st.session_state.query_history:
         st.info("No query history available. Execute some queries first!")
@@ -537,8 +537,8 @@ def show_history():
                 execute_query(query_info['query'])
 
 def show_distributed_system():
-    """Show distributed multi-agent system interface"""
-    st.header("🤖 Distributed Multi-Agent System")
+    """Show advanced data analysis system interface"""
+    st.header("🤖 Advanced Data Analysis")
     
     if not DISTRIBUTED_MODE:
         st.error("❌ Distributed mode is not available. Please ensure the distributed agents are properly installed.")
