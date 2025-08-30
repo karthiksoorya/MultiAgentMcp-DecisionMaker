@@ -27,7 +27,7 @@ except ImportError:
 
 # Page config
 st.set_page_config(
-    page_title="Multi-Agent PostgreSQL Analysis",
+    page_title="C-Suite Decision Maker",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -114,7 +114,7 @@ async def process_query_async(query):
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">🤖 Multi-Agent PostgreSQL Analysis System</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">💼 C-Suite Decision Maker</h1>', unsafe_allow_html=True)
     
     # Sidebar navigation
     with st.sidebar:
