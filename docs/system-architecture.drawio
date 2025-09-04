@@ -1,0 +1,191 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
+  <diagram name="System Architecture" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
+    <mxGraphModel dx="1938" dy="1193" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-75" value="" style="group;rounded=1;fillStyle=auto;opacity=0;fillColor=none;strokeColor=default;strokeWidth=1;dashed=1;" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="1871" y="315" width="159" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-76" value="DBs" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#FFFFFF;strokeColor=#e65100;strokeWidth=2;fontColor=#bf360c;dashed=1;dashPattern=8 8;" parent="FBY--1FL-ueA6TbJhNAt-75" vertex="1">
+          <mxGeometry width="159" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="app-group" value="Application Layer" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;strokeWidth=2;fontColor=#4a148c;" parent="1" vertex="1">
+          <mxGeometry x="510" y="301" width="620" height="710" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="app-streamlit" target="app-orchestrator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="app-streamlit" value="API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="550" y="626" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="app-orchestrator" target="FBY--1FL-ueA6TbJhNAt-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="app-orchestrator" target="app-agents" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="app-orchestrator" target="FBY--1FL-ueA6TbJhNAt-9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="app-orchestrator" value="🧠 Enhanced Orchestrator&#xa;orchestrator.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="700" y="625.9999999999999" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app-agents" value="🤖 Specialized Agent 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="897" y="460" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="title" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;C-Suite Decision Maker&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a237e;" parent="1" vertex="1">
+          <mxGeometry x="720" y="90" width="757" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-6" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="280" y="300" width="100" height="710" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-group" value="User Interfaces" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#e1f5fe;strokeColor=#0277bd;strokeWidth=2;fontColor=#01579b;" parent="FBY--1FL-ueA6TbJhNAt-6" vertex="1">
+          <mxGeometry width="100" height="710" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-streamlit" value="🌐 Web Interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#01579b;fontSize=12;" parent="FBY--1FL-ueA6TbJhNAt-6" vertex="1">
+          <mxGeometry x="11.111111111111112" y="236.66666666666663" width="72.22222222222223" height="355" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-8" value="🤖 Specialized Agent 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="897" y="625.9999999999999" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-9" value="🤖 Specialized Agents 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="897" y="800" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-13" value="📁 Demo SQLite DB&#xa;./data/demo.db" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#bf360c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1890" y="452" width="119" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-14" value="🗄️ PostgreSQL DBs&lt;br&gt;Users" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#bf360c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1890" y="622.0799999999999" width="117" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-17" value="🗄️ PostgreSQL DBs&lt;br&gt;Products" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#bf360c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1893" y="788" width="117" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-21" value="" style="group;fillColor=default;" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="1616" y="313" width="210" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="data-group" value="Data Layer" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;fontColor=#bf360c;" parent="FBY--1FL-ueA6TbJhNAt-21" vertex="1">
+          <mxGeometry width="210" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="data-pool" value="⚡ Connection Pool&#xa;AsyncPG + SQLAlchemy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#bf360c;fontSize=12;" parent="FBY--1FL-ueA6TbJhNAt-21" vertex="1">
+          <mxGeometry x="20.003333333333337" y="287" width="163.33333333333334" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="FBY--1FL-ueA6TbJhNAt-9" target="FBY--1FL-ueA6TbJhNAt-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-23" value="MCP Integration" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#e8f5e8;strokeColor=#2e7d32;strokeWidth=2;fontColor=#1b5e20;" parent="1" vertex="1">
+          <mxGeometry x="1230" y="313" width="320" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-57" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="1260" y="413" width="390" height="582" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-28" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-57" vertex="1" connectable="0">
+          <mxGeometry x="26.200000000000045" width="187.03384615384613" height="166.15384615384616" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-54" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-28" vertex="1" connectable="0">
+          <mxGeometry x="-8.307692307692308" width="200.5292307692308" height="157.84615384615387" as="geometry" />
+        </mxCell>
+        <mxCell id="mcp-group" value="&lt;span style=&quot;font-size: 12px; font-weight: 400;&quot;&gt;🔌&lt;/span&gt;MCP Server 1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#e8f5e8;strokeColor=#2e7d32;strokeWidth=2;fontColor=#1b5e20;" parent="FBY--1FL-ueA6TbJhNAt-54" vertex="1">
+          <mxGeometry x="8.307692307692308" width="187.03384615384613" height="157.84615384615387" as="geometry" />
+        </mxCell>
+        <mxCell id="mcp-tools" value="🛠️ Database Tools&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Read Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Write Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• List Tables&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Export Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Create Table&lt;/span&gt;&lt;br&gt;• Append Insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=11;align=left;" parent="FBY--1FL-ueA6TbJhNAt-54" vertex="1">
+          <mxGeometry x="48.63063660477456" y="56.96703296703298" width="112.50000000000003" height="92.57142857142858" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-25" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;@executeautomation/database-server&lt;/span&gt;&lt;br style=&quot;color: rgb(27, 94, 32);&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;Port: MCP Protocol&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="FBY--1FL-ueA6TbJhNAt-54" vertex="1">
+          <mxGeometry y="30.854769230769232" width="200.5292307692308" height="23.14523076923077" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-32" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-57" vertex="1" connectable="0">
+          <mxGeometry x="26.480000000000018" y="179.99999999999994" width="187.03384615384613" height="166.15384615384616" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-53" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-32" vertex="1" connectable="0">
+          <mxGeometry x="-8.307692307692308" width="200.5292307692308" height="157.84615384615387" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-33" value="&lt;span style=&quot;font-size: 12px; font-weight: 400;&quot;&gt;🔌&lt;/span&gt;MCP Server 2" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#e8f5e8;strokeColor=#2e7d32;strokeWidth=2;fontColor=#1b5e20;" parent="FBY--1FL-ueA6TbJhNAt-53" vertex="1">
+          <mxGeometry x="8.307692307692308" width="187.03384615384613" height="157.84615384615387" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-34" value="🛠️ Database Tools&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Read Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Write Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• List Tables&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Export Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Create Table&lt;/span&gt;&lt;br&gt;• Append Insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=11;align=left;" parent="FBY--1FL-ueA6TbJhNAt-53" vertex="1">
+          <mxGeometry x="48.63063660477456" y="56.96703296703298" width="112.50000000000003" height="92.57142857142858" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-35" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;@executeautomation/database-server&lt;/span&gt;&lt;br style=&quot;color: rgb(27, 94, 32);&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;Port: MCP Protocol&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="FBY--1FL-ueA6TbJhNAt-53" vertex="1">
+          <mxGeometry y="30.854769230769232" width="200.5292307692308" height="23.14523076923077" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-36" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-57" vertex="1" connectable="0">
+          <mxGeometry y="366" width="390" height="216" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-37" value="" style="group" parent="FBY--1FL-ueA6TbJhNAt-36" vertex="1" connectable="0">
+          <mxGeometry x="24.000000000000004" width="210" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-38" value="&lt;span style=&quot;font-size: 12px; font-weight: 400;&quot;&gt;🔌&lt;/span&gt;MCP Server 3" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#e8f5e8;strokeColor=#2e7d32;strokeWidth=2;fontColor=#1b5e20;" parent="FBY--1FL-ueA6TbJhNAt-37" vertex="1">
+          <mxGeometry width="187.03384615384613" height="157.84615384615387" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-39" value="🛠️ Database Tools&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Read Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Write Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• List Tables&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Export Query&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(27, 94, 32), rgb(130, 188, 134));&quot;&gt;• Create Table&lt;/span&gt;&lt;br&gt;• Append Insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=11;align=left;" parent="FBY--1FL-ueA6TbJhNAt-37" vertex="1">
+          <mxGeometry x="40.32294429708225" y="56.96703296703298" width="112.50000000000003" height="92.57142857142858" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-40" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;@executeautomation/database-server&lt;/span&gt;&lt;br style=&quot;color: rgb(27, 94, 32);&quot;&gt;&lt;span style=&quot;color: rgb(27, 94, 32);&quot;&gt;Port: MCP Protocol&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="FBY--1FL-ueA6TbJhNAt-37" vertex="1">
+          <mxGeometry x="-8.307692307692308" y="30.854769230769232" width="200.5292307692308" height="23.14523076923077" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=43.5;entryPerimeter=0;" parent="1" source="FBY--1FL-ueA6TbJhNAt-9" target="FBY--1FL-ueA6TbJhNAt-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="FBY--1FL-ueA6TbJhNAt-8" target="FBY--1FL-ueA6TbJhNAt-14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="app-agents" target="FBY--1FL-ueA6TbJhNAt-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1770" y="473" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="ui-group" target="app-group" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor-group" value="Monitoring &amp; Config" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=16;fontStyle=1;fillColor=#fce4ec;strokeColor=#c2185b;strokeWidth=2;fontColor=#880e4f;" parent="1" vertex="1">
+          <mxGeometry x="280" y="1081" width="1550" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor-prometheus" value="📈 Prometheus Metrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#880e4f;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="1133" width="276.25" height="49" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor-config" value="⚙️ Config Management&#xa;.env + config.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#880e4f;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="393.75" y="1133" width="276.25" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor-logging" value="📝 Logging System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#880e4f;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="917.8800000000001" y="1132.5" width="276.25" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-71" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="1900" y="1079" width="100" height="161" as="geometry" />
+        </mxCell>
+        <mxCell id="FBY--1FL-ueA6TbJhNAt-70" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry width="100" height="161" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Legends" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#424242;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="18.5" y="1" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-ui" value="User Interfaces" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#01579b;fontSize=10;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="11.5" y="24" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-app" value="Application Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontColor=#4a148c;fontSize=10;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="11.5" y="51" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-mcp" value="MCP Integration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=10;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="11.5" y="78" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-data" value="Data Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#bf360c;fontSize=10;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="11.5" y="106" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-monitor" value="Monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#880e4f;fontSize=10;" parent="FBY--1FL-ueA6TbJhNAt-71" vertex="1">
+          <mxGeometry x="11.5" y="134" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K-JZYxE3UU-CAq2m2r0z-2" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;Multi Agent Multi MCP System Architecture&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a237e;" vertex="1" parent="1">
+          <mxGeometry x="720" y="130" width="757" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
